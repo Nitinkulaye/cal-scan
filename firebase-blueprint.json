@@ -1,0 +1,76 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with Mifflin-St Jeor targets and health consent",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "goal": { "type": "string", "enum": ["lose", "maintain", "gain"] },
+        "sex": { "type": "string", "enum": ["male", "female"] },
+        "age": { "type": "number" },
+        "heightCm": { "type": "number" },
+        "currentWeightKg": { "type": "number" },
+        "targetWeightKg": { "type": "number" },
+        "activityLevel": { "type": "string" },
+        "dietaryPreference": { "type": "string" },
+        "weeklyRateKg": { "type": "number" },
+        "bmr": { "type": "number" },
+        "tdee": { "type": "number" },
+        "targetCalories": { "type": "number" },
+        "targetProteinGrams": { "type": "number" },
+        "targetCarbsGrams": { "type": "number" },
+        "targetFatGrams": { "type": "number" },
+        "healthConsentGiven": { "type": "boolean" },
+        "onboardingCompleted": { "type": "boolean" },
+        "streakCount": { "type": "number" },
+        "lastActiveDate": { "type": "string" }
+      },
+      "required": ["uid", "targetCalories", "targetProteinGrams", "targetCarbsGrams", "targetFatGrams", "healthConsentGiven"]
+    },
+    "FoodLogEntry": {
+      "title": "FoodLogEntry",
+      "description": "Individual logged food or meal record",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "calories": { "type": "number" },
+        "protein": { "type": "number" },
+        "carbs": { "type": "number" },
+        "fat": { "type": "number" },
+        "mealType": { "type": "string" },
+        "source": { "type": "string" },
+        "timestamp": { "type": "number" },
+        "dateString": { "type": "string" }
+      },
+      "required": ["userId", "name", "calories", "protein", "carbs", "fat", "mealType", "timestamp", "dateString"]
+    },
+    "WeightRecord": {
+      "title": "WeightRecord",
+      "description": "Biometric weight check-in record",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "weightKg": { "type": "number" },
+        "timestamp": { "type": "number" },
+        "dateString": { "type": "string" }
+      },
+      "required": ["userId", "weightKg", "timestamp", "dateString"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Stores user profile data isolated per authenticated user"
+    },
+    "/users/{userId}/logs/{logId}": {
+      "schema": { "$ref": "#/entities/FoodLogEntry" },
+      "description": "Stores logged meals for the user"
+    },
+    "/users/{userId}/weights/{weightId}": {
+      "schema": { "$ref": "#/entities/WeightRecord" },
+      "description": "Stores biometric weight entries for the user"
+    }
+  }
+}
